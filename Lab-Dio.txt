@@ -1,0 +1,17 @@
+Lab-Dio
+
+Cloud-Native
+
+Location: Central US
+
+SQL:
+Set Microsoft Entra admin:
+techcloud0324@outlook.com
+Admin Object/App ID: 64b135a5-15dc-4829-a9df-1731f86680eb 
+
+Server name: dbsrvdev-dio-lab-001
+Server admin login: josemirsilva-dio-lab-001
+Pwd: T9!vR4@pQ2#x
+
+Storage Account:
+stadevjosemirdiolab001
