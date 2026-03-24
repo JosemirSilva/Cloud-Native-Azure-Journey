@@ -53,9 +53,12 @@ Região e status dos serviços
 ## 🖼️ Recursos Criados no Azure
 
 ![Resource Group](docs/images/resource-group.png)
+
 ![Azure SQL Server](docs/images/Azure-SQL-Server.png)
+
 ![Azure SQL Database](docs/images/Azure-SQL-database.png)
-![Storage Account](docs/images/storage-account.png)
+
+![Storage Account](docs/images/Azure-Storage-account.png)
 
 📌 Os prints estão disponíveis na pasta docs/images.
 
