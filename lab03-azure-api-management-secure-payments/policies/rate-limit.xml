@@ -1,0 +1,27 @@
+<!--
+  Lab: Azure API Management – Secure Payments API
+  Objetivo: proteger operações sensíveis (pagamentos, estornos, consulta de transação)
+  contra abuso, scraping e picos de tráfego que possam indicar fraude ou testes agressivos.
+
+  Contexto de uso:
+  - Aplicar no escopo da API "payments" ou em operações específicas (ex.: POST /payments).
+  - Ajuste "calls" e "renewal-period" (segundos) conforme SLO e capacidade do backend.
+  - counter-key: exemplo por IP; em produção pode usar subscription key ou claims do JWT para limites por cliente.
+-->
+<policies>
+  <inbound>
+    <base />
+    <rate-limit-by-key calls="30"
+                       renewal-period="60"
+                       counter-key="@(context.Request.IpAddress)" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

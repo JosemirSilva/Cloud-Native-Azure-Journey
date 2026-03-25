@@ -1,0 +1,75 @@
+<!--
+  Lab: Azure API Management – Secure Payments API
+  Objetivo: garantir que chamadas a endpoints expostos no produto APIM incluam
+  a chave de assinatura (Ocp-Apim-Subscription-Key), padrão para APIs B2B e integrações de pagamento.
+
+  Contexto de uso:
+  - Adequado quando o produto APIM exige assinatura; esta política reforça presença do header antes do backend.
+  - Valida também cabeçalhos comuns em APIs REST de pagamento (idempotência e tipo de conteúdo em POST).
+  - A validade da chave em si é tratada pela plataforma APIM quando o produto está configurado para exigir assinatura.
+
+  Nota: combine com políticas JWT apenas se o desenho prever modelos distintos por rota ou produto.
+-->
+<policies>
+  <inbound>
+    <base />
+    <choose>
+      <when condition="@(string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault(&quot;Ocp-Apim-Subscription-Key&quot;, &quot;&quot;)))">
+        <return-response>
+          <set-status code="401" reason="Unauthorized" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>{
+  "error": "unauthorized",
+  "message": "Subscription key required. Send header Ocp-Apim-Subscription-Key.",
+  "code": "PAYMENTS_SUBSCRIPTION_KEY_MISSING"
+}</set-body>
+        </return-response>
+      </when>
+    </choose>
+    <choose>
+      <when condition="@(context.Request.Method == &quot;POST&quot; &amp;&amp; context.Request.Url.Path.ToLower().Contains(&quot;payment&quot;))">
+        <choose>
+          <when condition="@(string.IsNullOrEmpty(context.Request.Headers.GetValueOrDefault(&quot;Idempotency-Key&quot;, &quot;&quot;)))">
+            <return-response>
+              <set-status code="400" reason="Bad Request" />
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
+              <set-body>{
+  "error": "bad_request",
+  "message": "Idempotency-Key header is required for payment submissions.",
+  "code": "PAYMENTS_IDEMPOTENCY_REQUIRED"
+}</set-body>
+            </return-response>
+          </when>
+        </choose>
+        <choose>
+          <when condition="@(!context.Request.Headers.GetValueOrDefault(&quot;Content-Type&quot;, &quot;&quot;).ToLower().Contains(&quot;application/json&quot;))">
+            <return-response>
+              <set-status code="400" reason="Bad Request" />
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
+              <set-body>{
+  "error": "bad_request",
+  "message": "Content-Type must be application/json for payment operations.",
+  "code": "PAYMENTS_CONTENT_TYPE_INVALID"
+}</set-body>
+            </return-response>
+          </when>
+        </choose>
+      </when>
+    </choose>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

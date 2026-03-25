@@ -6,14 +6,14 @@ de serviços.
 
 ## 📦 Labs Desenvolvidos
 
-- ✅ **Lab** – Azure SQL Database e Blob Storage  
+- ✅ **Lab01** – Azure SQL Database e Blob Storage  
   Criação de infraestrutura básica com banco relacional e armazenamento de objetos.
 
-- 🐳 **Lab** – Containers  
+- ✅ **Lab02** – Container Apps Blog  
   Containerização da aplicação e uso do Azure Container Registry.
 
-  - 🔄 **Lab** – API Cloud Native  
-  Desenvolvimento de API integrada ao Azure SQL.
+- ✅ **Lab03** – API Management (Secure Payments API)  
+  Governança de APIs no Azure API Management: políticas, segurança e observabilidade. Pasta: [`lab03-azure-api-management-secure-payments`](./lab03-azure-api-management-secure-payments).
 
 - ☸️ **Lab** – AKS  
   Orquestração com Kubernetes no Azure.

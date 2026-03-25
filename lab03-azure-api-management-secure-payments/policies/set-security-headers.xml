@@ -1,0 +1,43 @@
+<!--
+  Lab: Azure API Management – Secure Payments API
+  Objetivo: endurecer respostas expostas ao cliente, reduzindo superfície de ataque do browser
+  e ocultando detalhes internos do backend que possam facilitar fingerprinting.
+
+  Contexto de uso:
+  - Aplicar no outbound da API ou produto; complementa HTTPS e políticas de autenticação.
+  - Cabeçalhos de segurança (HSTS, frame deny, XSS filter legado) reforçam boas práticas OWASP.
+  - Remoção de Server e X-Powered-By (quando presentes na resposta) evita vazar stack tecnológico.
+-->
+<policies>
+  <inbound>
+    <base />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <set-header name="Strict-Transport-Security" exists-action="override">
+      <value>max-age=31536000; includeSubDomains; preload</value>
+    </set-header>
+    <set-header name="X-Content-Type-Options" exists-action="override">
+      <value>nosniff</value>
+    </set-header>
+    <set-header name="X-Frame-Options" exists-action="override">
+      <value>DENY</value>
+    </set-header>
+    <set-header name="Referrer-Policy" exists-action="override">
+      <value>strict-origin-when-cross-origin</value>
+    </set-header>
+    <set-header name="Permissions-Policy" exists-action="override">
+      <value>geolocation=(), microphone=(), camera=()</value>
+    </set-header>
+    <!-- Remove informações que não devem sair do perímetro do gateway -->
+    <set-header name="Server" exists-action="delete" />
+    <set-header name="X-Powered-By" exists-action="delete" />
+    <set-header name="X-AspNet-Version" exists-action="delete" />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

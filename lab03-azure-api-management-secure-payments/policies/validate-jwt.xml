@@ -1,0 +1,38 @@
+<!--
+  Lab: Azure API Management – Secure Payments API
+  Objetivo: validar tokens Bearer (JWT) emitidos por um provedor de identidade (ex.: Microsoft Entra ID)
+  antes de encaminhar a requisição ao backend, alinhado a cenários OAuth2/OIDC em APIs de pagamento.
+
+  Contexto de uso:
+  - Para clientes móveis ou SPAs que obtêm access_token e chamam o APIM com Authorization: Bearer ...
+  - Substituir TENANT_ID e os valores de audience conforme o App Registration / API exposta no Entra ID.
+  - O endpoint openid-configuration pode apontar para o tenant específico ou common, conforme política de login.
+
+  IMPORTANTE: ajuste <audience> e url de openid-config antes de usar em ambiente real.
+-->
+<policies>
+  <inbound>
+    <base />
+    <validate-jwt header-name="Authorization"
+                  failed-validation-httpcode="401"
+                  failed-validation-error-message="Invalid or missing access token for payments API."
+                  require-expiration-time="true"
+                  require-scheme="Bearer">
+      <!-- Substitua pelo tenant do Microsoft Entra ID ou use common/multi-tenant conforme desenho -->
+      <openid-config url="https://login.microsoftonline.com/TENANT_ID/v2.0/.well-known/openid-configuration" />
+      <audiences>
+        <!-- Identificador da API protegida (ex.: App ID URI ou client id da API) -->
+        <audience>api://secure-payments-api</audience>
+      </audiences>
+    </validate-jwt>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
