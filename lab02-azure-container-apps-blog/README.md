@@ -97,7 +97,7 @@ az acr login --name "$ACR_NAME"
 Build na nuvem com ACR Tasks (quando permitido pela assinatura e políticas):
 
 ```bash
-cd /caminho/para/lab-azure-container-apps-blog
+cd /caminho/para/lab02-azure-container-apps-blog
 
 az acr build \
   --registry "$ACR_NAME" \
