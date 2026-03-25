@@ -15,6 +15,9 @@ de serviços.
 - ✅ **Lab03** – API Management (Secure Payments API)  
   Governança de APIs no Azure API Management: políticas, segurança e observabilidade. Pasta: [`lab03-azure-api-management-secure-payments`](./lab03-azure-api-management-secure-payments).
 
+- ✅ **Lab04** – Serverless autenticador de boletos  
+  Azure Functions (Consumption, Windows) e Azure Service Bus; documentação e evidências de provisionamento. Pasta: [`lab04-azure-serverless-boleto-authenticator`](./lab04-azure-serverless-boleto-authenticator).
+
 - ☸️ **Lab** – AKS  
   Orquestração com Kubernetes no Azure.
 
