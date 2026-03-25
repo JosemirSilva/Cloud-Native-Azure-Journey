@@ -1,4 +1,4 @@
-Lab 01 – Azure SQL Database e Blob Storage
+Lab – Azure SQL Database e Blob Storage
 Este laboratório marca o início da minha jornada prática em Cloud Native no Microsoft Azure, com foco na criação de infraestrutura básica utilizando serviços gerenciados de banco de dados e armazenamento.
 
 🎯 Objetivo do Lab
@@ -81,7 +81,7 @@ Mesmo arquiteturas simples já seguem princípios Cloud Native
 Este laboratório serve como base para evoluções naturais, como:
 
 🔗 API Cloud Native  
-Integração do Azure SQL Database com uma API REST (Lab 02)
+Integração do Azure SQL Database com uma API REST
 
 🐳 Containers  
 Containerização da aplicação utilizando Docker e Azure Container Registry

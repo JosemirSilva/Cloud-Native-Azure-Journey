@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blog Cloud Native – Azure Container Apps</title>
+  <style>
+    body { font-family: system-ui, Segoe UI, sans-serif; max-width: 880px; margin: 40px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 1.75rem; line-height: 1.25; margin-top: 0; }
+    h2 { font-size: 1.25rem; margin-top: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 0.25rem; }
+    h3 { font-size: 1.05rem; margin-top: 1.25rem; }
+    p, li { margin: 0.65rem 0; }
+    ul { padding-left: 1.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
+    th, td { border: 1px solid #ccc; padding: 0.6rem 0.75rem; vertical-align: top; }
+    th { background: #f5f5f5; text-align: left; }
+    .refs a { word-break: break-word; }
+    footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.9rem; color: #555; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Blog Cloud Native – Azure Container Apps</h1>
+    <p>Este material faz parte do <strong>Lab </strong> da jornada <strong>Cloud Native no Azure</strong> (Dio), com foco em <strong>aplicações containerizadas</strong>: empacotar a aplicação em imagem, publicá-la em um registry e executá-la em um serviço gerenciado na nuvem. Aqui você encontra uma visão conceitual alinhada a esse laboratório, conectando ideias de PaaS, Kubernetes e o serviço <strong>Azure Container Apps (ACA)</strong>.</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="sec-app-service">
+      <h2 id="sec-app-service">Conceitos de App Service</h2>
+      <p>O <strong>Azure App Service</strong> é uma oferta de plataforma como serviço (PaaS) para hospedar aplicações web, APIs REST e backends na Azure sem gerenciar servidores ou sistema operacional manualmente. Você publica o código ou o artefato e a plataforma cuida de hospedagem, certificados e integrações comuns.</p>
+      <h3>Escalabilidade</h3>
+      <p>O App Service permite ajustar capacidade conforme demanda: é possível escalar verticalmente (mais CPU/memória por instância) e horizontalmente (mais instâncias). Em planos que suportam, há <strong>escalonamento automático</strong> com base em métricas (por exemplo, CPU, memória ou regras personalizadas), aproximando o comportamento da carga real.</p>
+      <h3>Slot de deployment</h3>
+      <p><strong>Deployment slots</strong> são ambientes isolados (como “staging”) onde você implanta e testa uma nova versão antes de trocar com produção. Isso reduz risco: validação, testes de fumaça e troca controlada (swap) quando a versão estiver estável.</p>
+      <h3>CI/CD</h3>
+      <p><strong>CI/CD</strong> (integração e entrega contínuas) automatiza build, testes e deploy. Na prática, commits ou merges disparam pipelines que constroem o artefato, rodam verificações e publicam no App Service (ou em slots), mantendo entregas previsíveis e repetíveis.</p>
+    </section>
+
+    <section aria-labelledby="sec-k8s">
+      <h2 id="sec-k8s">Conceitos de Kubernetes</h2>
+      <p>O <strong>Azure Kubernetes Service (AKS)</strong> é o serviço gerenciado da Microsoft para executar <strong>Kubernetes</strong> na Azure: a control plane é operada pela plataforma, enquanto você foca em workloads, políticas e integrações.</p>
+      <h3>Pod</h3>
+      <p>Um <strong>Pod</strong> é a menor unidade agendável no Kubernetes: geralmente um ou mais contêineres que compartilham rede e armazenamento volátil no mesmo host. É onde sua aplicação containerizada de fato executa.</p>
+      <h3>Node</h3>
+      <p>Um <strong>Node</strong> é uma máquina de trabalho (em ambientes de nuvem, tipicamente uma VM) que executa os Pods. O scheduler do Kubernetes coloca Pods nos Nodes conforme recursos, afinidade e políticas.</p>
+      <h3>Cluster</h3>
+      <p>Um <strong>cluster</strong> Kubernetes é o conjunto de Nodes que executam cargas de trabalho containerizadas, mais os componentes de controle que mantêm o estado desejado (deployments, serviços, escalabilidade, etc.).</p>
+    </section>
+
+    <section aria-labelledby="sec-aca">
+      <h2 id="sec-aca">Azure Container Apps (ACA)</h2>
+      <p><strong>Azure Container Apps</strong> é um serviço gerenciado para executar contêineres e microsserviços na Azure, com foco em simplicidade operacional. Ele abstrai grande parte da complexidade de orquestração e integra recursos como escalonamento baseado em eventos e rede entre aplicações.</p>
+      <h3>Quando utilizar ACA</h3>
+      <p>Considere ACA quando você quer <strong>APIs, workers ou sites em contêiner</strong> sem administrar um cluster Kubernetes completo, ou quando precisa de <strong>escalonamento dinâmico</strong> e integração com mensageria/eventos sem construir toda a plataforma à mão. É adequado a equipes que priorizam velocidade de entrega e operação simplificada.</p>
+      <h3>Benefícios</h3>
+      <ul>
+        <li><strong>Escalabilidade automática:</strong> ajuste de réplicas conforme carga e regras configuráveis.</li>
+        <li><strong>Simplicidade operacional:</strong> menos tarefas de dia a dia do que operar e atualizar um cluster completo.</li>
+        <li><strong>Foco na aplicação:</strong> menos tempo em patches de control plane e mais em código e observabilidade.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="sec-cae">
+      <h2 id="sec-cae">Container Apps Environment (CAE)</h2>
+      <p>O <strong>Container Apps Environment</strong> é o limite de implantação compartilhado pelos seus Container Apps na mesma região e assinatura. Ele agrupa configurações de rede e integrações comuns.</p>
+      <h3>Papel do ambiente</h3>
+      <p>O CAE define onde as aplicações rodam em termos de <strong>perímetro compartilhado</strong>: vários apps podem coexistir no mesmo ambiente, com políticas e conectividade alinhadas ao seu desenho (por exemplo, integração com rede virtual, conforme o cenário).</p>
+      <h3>Integração com Log Analytics</h3>
+      <p>É comum associar o ambiente a um <strong>Log Analytics workspace</strong>, centralizando logs e métricas para consulta, alertas e troubleshooting — essencial para observar comportamento de contêineres em produção.</p>
+      <h3>Isolamento e rede</h3>
+      <p>O ambiente oferece <strong>isolamento lógico</strong> entre soluções (por exemplo, ambientes separados para desenvolvimento e produção) e suporta cenários de <strong>gerenciamento de rede</strong> (como integração com VNet em configurações apropriadas), permitindo controlar exposição e tráfego entre recursos.</p>
+    </section>
+
+    <section aria-labelledby="sec-comparacao">
+      <h2 id="sec-comparacao">Comparação: Azure Container Apps vs AKS</h2>
+      <table>
+        <caption>Visão geral — detalhes variam por versão e configuração na documentação oficial.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Critério</th>
+            <th scope="col">Azure Container Apps (ACA)</th>
+            <th scope="col">AKS (Kubernetes gerenciado)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Complexidade operacional</th>
+            <td>Menor: plataforma gerencia mais da orquestração e abstrações de runtime.</td>
+            <td>Maior: exige conhecimento de Kubernetes, upgrades de node pools, rede e políticas.</td>
+          </tr>
+          <tr>
+            <th scope="row">Casos de uso</th>
+            <td>APIs e microsserviços em contêiner, workers, integração com eventos; equipes que querem PaaS orientado a contêiner.</td>
+            <td>Cargas que precisam do ecossistema K8s completo, operadores, CRDs e controle fino do cluster.</td>
+          </tr>
+          <tr>
+            <th scope="row">Escalabilidade</th>
+            <td>Escalonamento automático integrado ao modelo de Container Apps (incluindo opções orientadas a eventos).</td>
+            <td>HPA, cluster autoscaler, escalonamento manual ou automatizado via APIs e políticas do Kubernetes.</td>
+          </tr>
+          <tr>
+            <th scope="row">Controle de infraestrutura</th>
+            <td>Menor controle direto sobre o plano de controle; foco em app, revisões e ambiente.</td>
+            <td>Controle amplo sobre nodes, rede (CNI), políticas e extensões do cluster.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="refs" aria-labelledby="sec-refs">
+      <h2 id="sec-refs">Referências</h2>
+      <ul>
+        <li><a href="https://learn.microsoft.com/azure/container-apps/">Documentação do Azure Container Apps</a> — Microsoft Learn.</li>
+        <li><a href="https://learn.microsoft.com/training/paths/intro-to-azure-container-apps/">Introdução ao Azure Container Apps</a> — Microsoft Learn (learning path).</li>
+        <li><a href="https://learn.microsoft.com/azure/container-apps/environment">Ambiente do Azure Container Apps</a> — Microsoft Learn.</li>
+        <li><a href="https://learn.microsoft.com/azure/aks/what-is-aks">O que é o Azure Kubernetes Service?</a> — Microsoft Learn.</li>
+        <li><a href="https://learn.microsoft.com/azure/app-service/overview">Visão geral do Azure App Service</a> — Microsoft Learn.</li>
+        <li><a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots">Slots de implantação no Azure App Service</a> — Microsoft Learn.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Blog gerado com apoio de IA e revisado por <strong>Josemir Silva</strong>, em atendimento ao aprendizado no bootcamp Dio — jornada Cloud Native no Azure.</p>
+  </footer>
+</body>
+</html>

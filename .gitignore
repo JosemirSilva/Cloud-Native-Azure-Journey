@@ -1,3 +1,6 @@
+# Material oficial da Dio (referência local da jornada). Não versionar:
+# se esta pasta existir dentro deste repositório, o Git ignora todo o conteúdo.
 Microsoft_Application_Platform/
-Microsoft_Application_Platform/
+
+# Anotações locais (credenciais / ambiente) — não enviar ao Git
 Lab-Dio.txt
