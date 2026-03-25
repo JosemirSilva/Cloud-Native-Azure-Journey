@@ -18,14 +18,8 @@ de serviços.
 - ✅ **Lab04** – Serverless autenticador de boletos  
   Azure Functions (Consumption, Windows) e Azure Service Bus; documentação e evidências de provisionamento. Pasta: [`lab04-azure-serverless-boleto-authenticator`](./lab04-azure-serverless-boleto-authenticator).
 
-- ☸️ **Lab** – AKS  
-  Orquestração com Kubernetes no Azure.
-
-- 🔐 **Lab** – DevSecOps  
-  Automação, segurança e infraestrutura como código.
-
-- 📊 **Lab** – Observabilidade  
-  Monitoramento, logs e métricas com Azure Monitor.
+- ✅ **Lab05** – GitHub Copilot no VS Code  
+  Instalação, configuração e aprendizados com GitHub Copilot no Visual Studio Code. Pasta: [`lab05-github-copilot-vscode`](./lab05-github-copilot-vscode).
 
 ## 🎯 Objetivo
 Construir uma base sólida em Cloud Native alinhada às práticas modernas do Azure,
