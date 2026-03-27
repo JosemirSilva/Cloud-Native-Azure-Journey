@@ -1,8 +1,20 @@
+<!--
+  Nota: a imagem do certificado fica em ./images/.
+  Se você substituir a imagem, atualize o caminho no src abaixo.
+-->
+
+<div align="center">
+  <img src="./images/cloud-native-certificate-josemir.jpg" alt="Certificado do bootcamp (DIO) — Cloud Native Azure Journey" width="900" />
+
+  <p>
+    <strong>Certificado</strong>:
+    <a href="https://www.dio.me/certificate/RPDHTCTP/share">ver credencial na DIO</a>
+  </p>
+</div>
+
 # 🌳 Cloud Native Azure Journey
 
-Esta jornada documenta minha evolução prática em arquitetura Cloud Native
-utilizando Microsoft Azure, com foco em boas práticas, automação e integração
-de serviços.
+Repositório do bootcamp da DIO focado em **arquitetura cloud-native no Azure**, com abordagem **hands-on**: desenho e integração entre serviços gerenciados, boas práticas de **segurança** (identidade, RBAC, Key Vault), automação e **documentação técnica** (diagramas, evidências e guias).
 
 ## 📦 Labs Desenvolvidos
 
@@ -20,6 +32,9 @@ de serviços.
 
 - ✅ **Lab05** – GitHub Copilot no VS Code  
   Instalação, configuração e aprendizados com GitHub Copilot no Visual Studio Code. Pasta: [`lab05-github-copilot-vscode`](./lab05-github-copilot-vscode).
+
+- ✅ **Lab06** – Arquitetura cloud-native (aluguel de carros)  
+  Arquitetura de referência com **diagramas Mermaid** e documentação de **segurança**: integração de **Azure Functions** com **Azure Key Vault** via **Managed Identity**, **RBAC** e **referências nativas** em *Application Settings*, além de observabilidade. (Sem código/IaC neste lab; foco em documentação e evidências.) Pasta: [`lab06-cloud-native-car-rental-architecture`](./lab06-cloud-native-car-rental-architecture).
 
 ## 🎯 Objetivo
 Construir uma base sólida em Cloud Native alinhada às práticas modernas do Azure,
